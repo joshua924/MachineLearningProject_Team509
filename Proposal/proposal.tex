@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+\renewcommand*\rmdefault{ppl}
+\usepackage{authblk}
+\usepackage[letterpaper, margin=1.2in]{geometry}
+\usepackage{hyperref}
+\usepackage[superscript,biblabel]{cite}
+\usepackage{ragged2e}
+\bibliographystyle{unsrt}
+
+\title{DOTA2 Match Result Prediction Based On Hero Lineups}
+\author[1]{Zhaoyin Zhu}
+\author[2]{Shuang Zhou}
+\affil[1]{Department of Biostatistics, New York University}
+\affil[2]{Department of Computer Science, New York University}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Dota 2 is a free-to-play multiplayer online battle arena (MOBA) video game developed and published by Valve Corporation. The game was released for Microsoft Windows, OS X, and Linux in July 2013, following a Windows-only public beta testing phase that began in 2011, and is the stand-alone sequel to Defense of the Ancients (DotA), a mod for Warcraft III: Reign of Chaos and its expansion pack, The Frozen Throne \cite{dota2}.\\
+
+\noindent Dota 2 is played in matches between two five-player teams, each of which occupies a stronghold in a corner of the playing field. A team wins by destroying the other side's "Ancient" building, located within the opposing stronghold. Each player controls one of 111 playable "Hero" characters that feature unique powers and styles of play. During a match, the player collects gold, items, and experience points for their Hero, while combating Heroes of the opposite team \cite{dota2}.
+
+\section{Motivation}
+ESports are getting growing attention and popularity. An increasing number of tournaments are being held, among which one of the most followed is ``The International" (TI). In 2015, the fifth TI tounament (TI5) in Seattle had the largest prize pool in eSports history, with a total of \$10.9 million. Therefore, it is very worthwhile to research the strategies and tactics within the game to have a better chance against competitions,yet this is a very new ground awaiting discovery. This is the motivation of our project: we want to propose a programmatic stratedy to pick out a lineup that puts a team in the driver seat before the match even begins.\\
+
+\noindent Each match in Dota starts with the players picking their heroes. This stage of a match is much more important than it seems, and very often a bad lineup will pretty much rule the team out. In this stage, two teams take turns to ban and pick heroes, one at a time, until all 10 players have their corresponding heroes. A lot of strategies can be applied during the banning and picking. To name a few, a team may want to ban the heroes that worked really well for the opposing team before, or they want to counter a specific hero in the opposing lineup by picking one that can contain it with a later pick, or they want to achieve a $1+1>2$ effect by designing their lineup in a way that heroes supplement each other. Our project is to materialize those strategies and come up with an ideal lineup.
+
+\section{Problem}
+\subsection{Data}
+The raw data we have is two database tables with very detailed descriptions of 12000 matches. We will only describe the revelant fields in the scope of this project. Table \ref{matches} shows the summary for database table MATCHES, and table \ref{players} shows the summary for database table PLAYERS. The two tables will be joined to form one single table that contains all heroes picked within the matches.
+
+\begin{table}[h]
+  \begin{center}
+	\begin{tabular}{| c | c | c |}\hline
+		field & type & description \\\hline
+		match\_id & String & identifier for a match \\\hline
+		radiant\_win & String & 0 if dire win, 1 if radiant win \\\hline
+		human\_players & Integer & number of human players \\\hline
+	\end{tabular}
+	\caption{Summary for table: MATCHES}\label{matches}
+  \end{center}
+\end{table}
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{| c | c | c |}\hline
+			field & type & description \\\hline
+			match\_id & String & identifier for a match \\\hline
+			hero\_id & String & identifier for each hero \\\hline
+			win & Integer & 0 if the player lose, 1 if win \\\hline
+		\end{tabular}
+		\caption{Summary for table: PLAYERS}\label{players}
+	\end{center}
+\end{table}
+
+\subsection{Objective}
+
+\section{Methods}
+
+\begin{thebibliography}{9}
+\bibitem{dota2} \url{https://en.wikipedia.org/wiki/Dota_2}, Wikipedia, accessed at March 21, 2016.
+
+\end{thebibliography}
+\end{document}
