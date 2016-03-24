@@ -1,4 +1,4 @@
 .DS_Store
 //.DS_Store
 dota2stats.sql
-/preprocessing
+/preprocessing/*.sql
