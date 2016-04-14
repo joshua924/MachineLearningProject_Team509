@@ -5,9 +5,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 
+
+'''
+6110
+6065
+'''
 def run_random_forest(X, y, n_tr, n_te):
   X_tr, y_tr = X[:n_tr], y[:n_tr]
-  print 'Training Model ...'
+  print 'Training Random Forest Model ...'
   model = RandomForestClassifier(n_estimators=20, bootstrap=True, 
       n_jobs=-1, max_features='auto').fit(X_tr, y_tr)
   print 'Evaluating ...'
@@ -55,18 +60,18 @@ def adaBoost_eval(trees, alphas, X, y):
 def run_logistic(X, y, n_tr, n_te):
   X_tr, y_tr, X_te, y_te = X[:n_tr], y[:n_tr], X[-n_te:], y[-n_te:]
 
-  print 'Training Model ...'
+  print 'Training Logistic Model ...'
   model = LogisticRegression(penalty='l2', n_jobs=4, tol=0.0000001) \
       .fit(X_tr, y_tr)
 
   print 'Evaluating ...'
-  print 'Training Error is %6.4f' % model.score(X_tr, y_tr)
-  print 'Raw Precision is %6.4f' % model.score(X_te, y_te)
+  print 'Training Accuracy is %6.4f' % model.score(X_tr, y_tr)
+  print 'Test Accuracy is %6.4f' % model.score(X_te, y_te)
 
 
 if __name__ == '__main__':
   print 'Generating Features ...'
-  X, y = fg.generate_feature('match_player.csv')
-  # run_logistic(X, y, 10000, 2000)
+  X, y = fg.generate_feature('match_player.csv', min_count=100)
+  run_logistic(X, y, 10000, 2000)
   run_random_forest(X, y, 10000, 2000)
 
