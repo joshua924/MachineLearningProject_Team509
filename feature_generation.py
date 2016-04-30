@@ -7,12 +7,14 @@ the feature set includes:
 '''
 import numpy as np
 from sklearn.utils import shuffle
+
+
 '''
 @param in_file: the raw input file
 return (X, y): X is a sparse matrix containing features, 
 and y is a list of labels for each instance
 '''
-def generate_feature(in_file, dump=False, min_count=100):
+def generate_feature(in_file, dump=False, single_only=False, min_count=100):
   f = open(in_file, 'r')
   f.readline()
   training_data, tags = [], []
@@ -25,24 +27,27 @@ def generate_feature(in_file, dump=False, min_count=100):
     if len(fs) != 10:
       continue
     tags.append(tokens[0])
-    features = get_feature_array(fs)
+    features = get_feature_array(fs, single_only)
     update_total_features(total_features, features)
     training_data.append(features)
 
   training_data = transform_to_matrix(total_features, training_data)
   cut_off(training_data, min_count)
   shuffle(training_data, tags)
+  tags = np.array(tags)
   if dump:
-    np.savetxt('preprocessing/dump.txt', training_data, fmt='%d', delimiter=',')
+    np.savetxt('preprocessing/dumpX.txt', training_data, fmt='%d', delimiter=',')
+    np.savetxt('preprocessing/dumpY.txt', tags[np.newaxis].T, fmt='%s', delimiter=',')
   return training_data, np.array(tags)
 
 
-def get_feature_array(fs):
+def get_feature_array(fs, single_only=False):
   features = []
   features.extend(make_single_feature(fs))
-  features.extend(make_same_side_bi_feature('d', fs[:5]))
-  features.extend(make_same_side_bi_feature('r', fs[5:]))
-  features.extend(make_diff_side_bi_feature(fs))
+  if not single_only:
+    features.extend(make_same_side_bi_feature('d', fs[:5]))
+    features.extend(make_same_side_bi_feature('r', fs[5:]))
+    features.extend(make_diff_side_bi_feature(fs))
   return features
 
 

@@ -1,0 +1,41 @@
+\documentclass[11pt]{article}
+\renewcommand*\rmdefault{ppl}
+\usepackage{authblk}
+\usepackage[letterpaper, margin=1.2in]{geometry}
+\usepackage{hyperref}
+\usepackage[superscript,biblabel]{cite}
+\usepackage{ragged2e}
+\bibliographystyle{unsrt}
+
+\title{Interim Analysis Report\\DOTA2 Match Result Prediction Based On Hero Lineups}
+\author[1]{Team 509\\Zhaoyin Zhu}
+\author[2]{Shuang Zhou}
+\affil[1]{Division of Biostatistics, School of Medicine, New York University}
+\affil[2]{Department of Computer Science, New York University}
+
+\begin{document}
+\maketitle
+\section{Current Work}
+\subsection{Feature Generation}
+We have implemented the feature generation program that will take a raw input file and produce the following two output:
+\begin{enumerate}
+\item The matrix representing the instances from input, $X$. $X$ is a $n\times d$ matrix where $n$ is the number of matches and $d$ is the total number of features appeared at least once in the input. Each cell has value $1$ or $0$, indicating whether a feature is present in this instance.
+\item The results of matches, $y$. $y$ is a vector of length $n$ indicating which side has won the match.
+\end{enumerate}
+\subsection{Classifier Trials}
+After experimenting multiple classification algorithms, SVM, Random Forest, Decision Trees, Boosting, etc. We have landed on two algorithms for now. We choose Logistic Regression as the parametric classifier, and Random Forest as the non-parametric classifier. Both models we choose achieve a similar accuracy around 60 percent without much parameter tuning.
+
+\section{Future Work}
+\subsection{On Feature Selection}
+After feature generation, we have 11970 features right now and some features might negatively affect our model. To improve the accuracy of our methods, we will conduct feature selection and reduce the dimensions of our data. Several feature selection methods will be considered and the performance of each potential method will be assessed on the testing dataset.
+\begin{enumerate}
+	\item Since all the features are binary variables, we might remove the features with low appearance frequencies. The number of features that appear less or equal than 3 times is 757, less or equal than 5 times is 902 and less or equal than 10 times is 1348. 
+	\item We will calculate the correlation coefficients between outcome and each feature, and might remove the features with low correlation ($<0.1$, $<0.2$, $<0,3$). 
+	\item For nonparametric models (e.g. random forest), we might use some importance indices like entropy to select variables and then fit the model. 
+	\item For parametric models (e.g. SVM, logistic), we might use Lasso or adaptive Lasso to select variables and estimate parameters simultaneously. 
+\end{enumerate}
+
+\subsection{On Classification Algorithms}
+One way to improve the performance of classifiers is to tune the hyperparameters of the models. For example, we can adjust number of trees, depth or number of features to consider in each split in random forest. Or we can adjust number of rounds for boosting algorithms.
+
+\end{document}
