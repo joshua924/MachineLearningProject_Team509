@@ -14,7 +14,7 @@ from sklearn.utils import shuffle
 return (X, y): X is a sparse matrix containing features, 
 and y is a list of labels for each instance
 '''
-def generate_feature(in_file, dump=False, single_only=False, min_count=100):
+def generate_feature(in_file, dump=False, single_only=False, min_count=0):
   f = open(in_file, 'r')
   f.readline()
   training_data, tags = [], []
@@ -32,13 +32,13 @@ def generate_feature(in_file, dump=False, single_only=False, min_count=100):
     training_data.append(features)
 
   training_data = transform_to_matrix(total_features, training_data)
-  cut_off(training_data, min_count)
+  training_data = cut_off(training_data, min_count)
   shuffle(training_data, tags)
   tags = np.array(tags)
   if dump:
     np.savetxt('preprocessing/dumpX.txt', training_data, fmt='%d', delimiter=',')
     np.savetxt('preprocessing/dumpY.txt', tags[np.newaxis].T, fmt='%s', delimiter=',')
-  return training_data, np.array(tags)
+  return total_features, training_data, np.array(tags)
 
 
 def get_feature_array(fs, single_only=False):
@@ -101,5 +101,5 @@ def reverse_side(features):
 
 def cut_off(X, min_count):
   sums = np.sum(X, axis=0)
-  X = np.delete(X, np.where(sums<min_count), 1)
+  return np.delete(X, np.where(sums<min_count), 1)
 

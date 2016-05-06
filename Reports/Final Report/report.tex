@@ -6,6 +6,7 @@
 \usepackage[superscript,biblabel]{cite}
 \usepackage{ragged2e}
 \usepackage{caption}
+\usepackage{graphicx}
 \bibliographystyle{unsrt}
 
 \title{DOTA2 Match Result Prediction Based On Hero Lineups}
@@ -72,6 +73,20 @@ In order to achieve desirable prediction accuracy, we will include 3 types of fe
 
 \section{Results}
 \subsection{Predicting Match Results}
+\subsubsection{Feature Selection as part of the Model}
+The number of features in this case is slight larger than the number of instances we have, thus for linear model such as Logistic Regression to work, we need to do a feature selection. The traditional way is to decide what features are useful and disregard all others in the model. However, online games like DOTA2 has some characteristics that may render the traditional feature selection inappropriate:
+\begin{enumerate}
+\item New heroes are constantly added as the game evolves.
+\item New patches are coming out all the time.
+\item There are always new trendings of tactics and strategies.
+\end{enumerate}
+
+\noindent These may caused some issues when the old features remained in the model appear less frequently and new important features that come about are ignored regardless. Then the model will suffer from performance loss unless rebuilt entirely.\\
+\\
+A more provident way is to let the model adapt to new features and select them with some certain cretiria. That is, we are buiding into the model a feature selection precess, instead of giving it a bunch of features we have already picked out.\\
+\\
+After some trials, we find out that cutting off features by their number of appearances in the dataset has random effect on performance, that is, no obvious relation between the threshold we set and the accuracy we obtain is observed. Thus we decide to go with selection by computing Pearson product-moment correlation coefficients.
+
 \begin{center}
 \captionof{table}{Feature Selection By Logistic Regression}
 \begin{tabular}{| c | c | c | c |}\hline
@@ -82,17 +97,13 @@ Count Cut-off & Correlation Cut-off & Training Accuracy & Test Accuracy \\\hline
 	20 & 0.015 & 0.7284 & 0.6650 \\\hline
 	20 & 0.02 & 0.6795 & 0.6510 \\\hline
 \end{tabular}
-
-\captionof{table}{Feature Selection By Random Forest}
-\begin{tabular}{| c | c | c | c |}\hline
-	Count Cut-off & Correlation Cut-off & Training Accuracy & Test Accuracy \\\hline
-	10 & 0.015 & 0.9910 & 0.6365 \\\hline
-	10 & 0.02 & 0.9498 & 0.6220 \\\hline
-	20 & 0.01 & 0.9973 & 0.6315 \\\hline
-	20 & 0.015 & 0.9912 & 0.6070 \\\hline
-	20 & 0.02 & 0.9489 & 0.6160 \\\hline
-\end{tabular}
 \end{center}
+A figure is given before to summarize the results.
+\begin{center}
+\includegraphics[scale=0.6]{big_interval.png}
+\captionof{figure}{Accuracy With Different Correlation Cut-off}
+\end{center}
+When we cut off features with a correlation lower than 0.011, the model gives the highest validation accuracy. Therefore, we will go along with 0.011 as the correlation threshold with any future dataset.
 
 \begin{thebibliography}{9}
 	\bibitem{dota2} \url{https://en.wikipedia.org/wiki/Dota_2}, Wikipedia, accessed at March 21, 2016.
