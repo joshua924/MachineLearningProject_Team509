@@ -96,30 +96,30 @@ def reverseMap(hero_map):
 def simulate():
   model, feature_dict, hero_map = loadModelAndFeature()
   id_hero_map, lookup = reverseMap(hero_map)
-  print "The engine will pick on behalf of Dire, and "\
-      + "you will pick for Radiant. Ready? Let's go!"
+  print "The engine will pick on behalf of Radiant, and "\
+      + "you will pick for Dire, and you will go first. Ready? Let's go!"
   dire, radiant, feature_list = [], [], []
   for i in range(5):
-    choice = raw_input('What is your pick for Radiant: ')
+    choice = raw_input('What is your pick for Dire: ')
     while choice not in hero_map or hero_map[choice] not in id_hero_map:
-      print 'No hero named %s or already picked, please check!' % choice
+      print "No hero named %s or it's already picked, please check!" % choice
       choice = raw_input('What is your pick: ')
-    generate_new_feature_vector(feature_list, dire, radiant, hero_map[choice], 'r')
+    generate_new_feature_vector(feature_list, dire, radiant, hero_map[choice], 'd')
     del id_hero_map[hero_map[choice]]
     
     max_prob, max_idx = 0.0, -1
     for i in id_hero_map:
       fake_list, fake_d, fake_r = list(feature_list), list(dire), list(radiant)
-      generate_new_feature_vector(fake_list, fake_d, fake_r, i, 'd')
+      generate_new_feature_vector(fake_list, fake_d, fake_r, i, 'r')
       ins = make_vector(fake_list, feature_dict)
-      dire_prob = model.predict_proba(ins.reshape(1, -1))[0][0]
+      dire_prob = model.predict_proba(ins.reshape(1, -1))[0][1]
       if dire_prob > max_prob:
         max_prob = dire_prob
         max_idx = i
       elif dire_prob == max_prob:
         max_idx = [max_idx, i][random.randint(0, 1)]
-    print 'Recommendation engine picks %s for Dire' % id_hero_map[max_idx]
-    generate_new_feature_vector(feature_list, dire, radiant, max_idx, 'd')
+    print 'Recommendation engine picks %s for Radiant' % id_hero_map[max_idx]
+    generate_new_feature_vector(feature_list, dire, radiant, max_idx, 'r')
     ins = make_vector(feature_list, feature_dict)
     print '%s features hit' % sum(ins)
     print_sides(dire, radiant, lookup)
