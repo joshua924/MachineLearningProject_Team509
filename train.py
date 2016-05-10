@@ -45,7 +45,7 @@ if __name__ == '__main__':
   print 'Generating and Selecting Features ...'
   X, y = get_feature()
   print 'Building Model ...'
-  # run_svc(X, y, 10000, 2000)
-  run_logistic(X, y, 10000, 2000, save=True)
-  # run_SGD(X, y, 10000, 2000)
+  run_logistic(X, y, 10000, 2000)
+  run_SGD(X, y, 10000, 2000)
+  run_random_forest(X, y, 10000, 2000)
 

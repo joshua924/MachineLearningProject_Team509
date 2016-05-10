@@ -90,7 +90,7 @@ After some trials, we find out that cutting off features by their number of appe
 \begin{center}
 \captionof{table}{Feature Selection By Logistic Regression}
 \begin{tabular}{| c | c | c | c |}\hline
-Count Cut-off & Correlation Cut-off & Training Accuracy & Test Accuracy \\\hline
+Count Cut-off & Correlation Cut-off & Training Accuracy & Validation Accuracy \\\hline
 	10 & 0.015 & 0.7338 & 0.6715 \\\hline
 	10 & 0.02 & 0.6863 & 0.6595 \\\hline
 	20 & 0.01 & 0.7780 & 0.6665 \\\hline
@@ -104,6 +104,19 @@ A figure is given before to summarize the results.
 \captionof{figure}{Accuracy With Different Correlation Cut-off}
 \end{center}
 When we cut off features with a correlation lower than 0.011, the model gives the highest validation accuracy. Therefore, we will go along with 0.011 as the correlation threshold with any future dataset.
+
+\subsubsection{Different Models}
+We give the best performers among various models we have tried in the following table. The results are after parameter tuning.
+\begin{center}
+	\captionof{table}{Results for Best Performing Models}
+	\begin{tabular}{| c | c | c |}\hline
+		Model & Training Accuracy & Validation Accuracy \\\hline
+		Random Forest & 0.9967 & 0.6285 \\\hline
+		SVM & 0.8403 & 0.6720 \\\hline
+		Logistic Regression & 0.7861 & 0.6800 \\\hline
+	\end{tabular}
+\end{center}
+Other trials are Decision Trees, KNN classifier and adaBoost. However, these models prove to be ill-suited for this dataset so we have omitted them in the table.
 
 \begin{thebibliography}{9}
 	\bibitem{dota2} \url{https://en.wikipedia.org/wiki/Dota_2}, Wikipedia, accessed at March 21, 2016.
