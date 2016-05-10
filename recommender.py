@@ -96,7 +96,7 @@ def reverseMap(hero_map):
 def simulate():
   model, feature_dict, hero_map = loadModelAndFeature()
   id_hero_map, lookup = reverseMap(hero_map)
-  print "The engine will pick on behalf of Radiant, and "\
+  print "The engine will pick on behalf of Radiant, "\
       + "you will pick for Dire, and you will go first. Ready? Let's go!"
   dire, radiant, feature_list = [], [], []
   for i in range(5):
@@ -121,7 +121,6 @@ def simulate():
     print 'Recommendation engine picks %s for Radiant' % id_hero_map[max_idx]
     generate_new_feature_vector(feature_list, dire, radiant, max_idx, 'r')
     ins = make_vector(feature_list, feature_dict)
-    print '%s features hit' % sum(ins)
     print_sides(dire, radiant, lookup)
     printProb(model.classes_, model.predict_proba(ins.reshape(1, -1))[0])
     del id_hero_map[max_idx]
